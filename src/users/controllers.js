@@ -2,6 +2,7 @@ const User = require("./model");
 
 const registerUser = async (req, res) => {
   try {
+    console.log("next called");
     // const user = await User.create({
     //     username: req.body.username,
     //     email: req.body.email,
@@ -48,12 +49,10 @@ const updateUserByUsername = async (req, res) => {
       password: newPassword,
     });
 
-    res
-      .status(200)
-      .json({
-        message: "User updated successfully",
-        user: { username: req.body.username, email: req.body.email },
-      });
+    res.status(200).json({
+      message: "User updated successfully",
+      user: { username: req.body.username, email: req.body.email },
+    });
   } catch (error) {
     res.status(501).json({ errorMessage: "Validation error", error });
   }
@@ -71,7 +70,7 @@ const updateUserByUsername = async (req, res) => {
 //         { [req.body.updateKey]: req.body.updateValue },
 //         { where: { username: req.body.username } }
 //       );
-  
+
 //       res.status(201).json({ message: "success", updateResult: updateResult });
 //     } catch (error) {
 //       res.status(501).json({ errorMessage: error.message, error: error });
@@ -87,12 +86,21 @@ const deleteUserByUsername = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res
-      .status(201)
-      .json({
-        message: "user deleted successfully",
-        user: { username: req.body.username, email: req.body.email },
-      });
+    res.status(201).json({
+      message: "user deleted successfully",
+      user: { username: req.body.username, email: req.body.email },
+    });
+  } catch (error) {
+    res.status(501).json({ errorMessage: "Validation error", error });
+  }
+};
+
+const login = async (req, res) => {
+  try {
+    res.status(200).json({
+      message: "success",
+      user: { username: req.body.username, email: req.body.email },
+    });
   } catch (error) {
     res.status(501).json({ errorMessage: "Validation error", error });
   }
@@ -103,4 +111,5 @@ module.exports = {
   getAllUsers,
   updateUserByUsername,
   deleteUserByUsername,
+  login
 };
