@@ -1,4 +1,5 @@
 const User = require("./model");
+const jwt = require("jsonwebtoken");
 
 const registerUser = async (req, res) => {
   try {
@@ -97,9 +98,14 @@ const deleteUserByUsername = async (req, res) => {
 
 const login = async (req, res) => {
   try {
+    const token = await jwt.sign({ id: req.user.id }, process.env.SECRET); //user is generated in the comparePass func
     res.status(200).json({
       message: "success",
-      user: { username: req.body.username, email: req.body.email },
+      user: {
+        username: req.user.username,
+        email: req.user.email,
+        token: token,
+      },
     });
   } catch (error) {
     res.status(501).json({ errorMessage: "Validation error", error });
@@ -111,5 +117,5 @@ module.exports = {
   getAllUsers,
   updateUserByUsername,
   deleteUserByUsername,
-  login
+  login,
 };
