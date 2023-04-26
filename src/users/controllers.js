@@ -98,6 +98,15 @@ const deleteUserByUsername = async (req, res) => {
 
 const login = async (req, res) => {
   try {
+    if (req.authUser) {
+      res.status(200).json({
+        message: "success",
+        user: {
+          username: req.authUser.username,
+        },
+      });
+      return
+    }
     const token = await jwt.sign({ id: req.user.id }, process.env.SECRET); //user is generated in the comparePass func
     res.status(200).json({
       message: "success",
