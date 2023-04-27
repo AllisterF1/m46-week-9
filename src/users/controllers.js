@@ -34,30 +34,61 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-const updateUserByUsername = async (req, res) => {
-  const { username, newUsername, newPassword, newEmail } = req.body;
+// const updateUserByUsername = async (req, res) => {
+//   const { username, newUsername, newPassword, newEmail } = req.body;
 
-  try {
-    const user = await User.findOne({ where: { username } });
+//   try {
+//     const user = await User.findOne({ where: { username } });
 
-    if (!user) {
-      return res.status(404).json({ errorMessage: "User not found" });
-    }
+//     if (!user) {
+//       return res.status(404).json({ errorMessage: "User not found" });
+//     }
 
-    await user.update({
-      username: newUsername,
-      email: newEmail,
-      password: newPassword,
-    });
+//     await user.update({
+//       username: newUsername,
+//       email: newEmail,
+//       password: newPassword,
+//     });
 
-    res.status(200).json({
-      message: "User updated successfully",
-      user: { username: req.body.username, email: req.body.email },
-    });
-  } catch (error) {
-    res.status(501).json({ errorMessage: "Validation error", error });
-  }
-};
+//     res.status(200).json({
+//       message: "User updated successfully",
+//       user: { username: req.body.username, email: req.body.email },
+//     });
+//   } catch (error) {
+//     res.status(501).json({ errorMessage: "Validation error", error });
+//   }
+// };
+
+
+////only allows user to update their own details WIP
+// const updateUserByUsername = async (req, res) => {
+//   const { username, newUsername, newPassword, newEmail } = req.body;
+
+//   try {
+//     const user = await User.findOne({ where: { username } });
+
+//     if (!user) {
+//       return res.status(404).json({ errorMessage: "User not found" });
+//     }
+
+//     if (req.authUser.username !== username) {
+//       return res.status(401).json({ errorMessage: "Unauthorized" });
+//     }
+
+//     await user.update({
+//       username: newUsername,
+//       email: newEmail,
+//       password: newPassword,
+//     });
+
+//     res.status(200).json({
+//       message: "User updated successfully",
+//       user: { username: req.body.username, email: req.body.email },
+//     });
+//   } catch (error) {
+//     res.status(501).json({ errorMessage: "Validation error", error });
+//   }
+// };
 
 //Alex's version
 // {
@@ -124,7 +155,7 @@ const login = async (req, res) => {
 module.exports = {
   registerUser,
   getAllUsers,
-  updateUserByUsername,
   deleteUserByUsername,
   login,
+  updateUser
 };

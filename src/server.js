@@ -8,6 +8,7 @@ const port = process.env.PORT || 5001;
 const userRouter = require("./users/routes");
 
 const User = require("./users/model");
+const Order = require("./orders/model");
 
 const app = express();
 app.use(cors());
@@ -15,8 +16,12 @@ app.use(cors());
 app.use(express.json());
 
 const syncTables = () => {
+
+  User.hasMany(Order);
+  Order.belongsTo(User);
   //force:true to update tables
   User.sync();
+  Order.sync();
 };
 
 app.use(userRouter);
