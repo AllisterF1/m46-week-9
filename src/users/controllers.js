@@ -4,11 +4,15 @@ const jwt = require("jsonwebtoken");
 const registerUser = async (req, res) => {
   try {
     console.log("next called");
+
+    //if we wanted to predetermine the inputs
     // const user = await User.create({
     //     username: req.body.username,
     //     email: req.body.email,
     //     password: req.body.password
     // });
+
+    
     const user = await User.create(req.body);
     res.status(201).json({
       message: "success",
@@ -34,79 +38,17 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-// const updateUserByUsername = async (req, res) => {
-//   const { username, newUsername, newPassword, newEmail } = req.body;
-
-//   try {
-//     const user = await User.findOne({ where: { username } });
-
-//     if (!user) {
-//       return res.status(404).json({ errorMessage: "User not found" });
-//     }
-
-//     await user.update({
-//       username: newUsername,
-//       email: newEmail,
-//       password: newPassword,
-//     });
-
-//     res.status(200).json({
-//       message: "User updated successfully",
-//       user: { username: req.body.username, email: req.body.email },
-//     });
-//   } catch (error) {
-//     res.status(501).json({ errorMessage: "Validation error", error });
-//   }
-// };
-
-
-////only allows user to update their own details WIP
-// const updateUserByUsername = async (req, res) => {
-//   const { username, newUsername, newPassword, newEmail } = req.body;
-
-//   try {
-//     const user = await User.findOne({ where: { username } });
-
-//     if (!user) {
-//       return res.status(404).json({ errorMessage: "User not found" });
-//     }
-
-//     if (req.authUser.username !== username) {
-//       return res.status(401).json({ errorMessage: "Unauthorized" });
-//     }
-
-//     await user.update({
-//       username: newUsername,
-//       email: newEmail,
-//       password: newPassword,
-//     });
-
-//     res.status(200).json({
-//       message: "User updated successfully",
-//       user: { username: req.body.username, email: req.body.email },
-//     });
-//   } catch (error) {
-//     res.status(501).json({ errorMessage: "Validation error", error });
-//   }
-// };
-
-//Alex's version
-// {
-//     "username" : "Alex",
-//     "updateKey" : "email",
-//     "updateValue" : "alexA@email.com"
-// }
 const updateUser = async (req, res) => {
-    try {
-      const updateResult = await User.update(
-        { [req.body.updateKey]: req.body.updateValue },
-        { where: { username: req.body.username } }
-      );
+  try {
+    const updateResult = await User.update(
+      { [req.body.updateKey]: req.body.updateValue },
+      { where: { username: req.body.username } }
+    );
 
-      res.status(201).json({ message: "success", updateResult: updateResult });
-    } catch (error) {
-      res.status(501).json({ errorMessage: error.message, error: error });
-    }
+    res.status(201).json({ message: "success", updateResult: updateResult });
+  } catch (error) {
+    res.status(501).json({ errorMessage: error.message, error: error });
+  }
 };
 
 const deleteUserByUsername = async (req, res) => {
@@ -136,7 +78,7 @@ const login = async (req, res) => {
           username: req.authUser.username,
         },
       });
-      return
+      return;
     }
     const token = await jwt.sign({ id: req.user.id }, process.env.SECRET); //user is generated in the comparePass func
     res.status(200).json({
@@ -157,5 +99,5 @@ module.exports = {
   getAllUsers,
   deleteUserByUsername,
   login,
-  updateUser
+  updateUser,
 };

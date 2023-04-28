@@ -12,7 +12,7 @@ const userRouter = Router();
 
 userRouter.post("/users/register", hashPass, registerUser);
 userRouter.post("/users/login", comparePass, login);
-userRouter.get("/users/getallusers", getAllUsers); //protected endpoint thanks to token check
+userRouter.get("/users/getallusers", tokenCheck, getAllUsers); //protected endpoint thanks to token check
 userRouter.get("/users/authcheck", tokenCheck, login)
 userRouter.put("/users/updateuser", updateUser);
 userRouter.delete("/users/deleteuser", deleteUserByUsername);
